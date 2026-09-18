@@ -1,0 +1,2 @@
+dataset = "../data/smoke.jsonl"
+seed = 42

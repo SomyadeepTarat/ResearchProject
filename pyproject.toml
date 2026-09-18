@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "claimaudit"
+version = "0.1.0"
+description = "Research prototype for evidence-grounded scientific claim verification"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[project.optional-dependencies]
+models = ["sentence-transformers>=5,<6", "torch>=2.6,<3", "transformers>=5,<6"]
+
+[project.scripts]
+claimaudit = "claimaudit.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/claimaudit"]

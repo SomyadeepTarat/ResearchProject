@@ -1,0 +1,12 @@
+dataset = "../data/smoke.jsonl"
+seed = 42
+
+[embedding]
+model_id = "sentence-transformers/all-MiniLM-L6-v2"
+revision = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+# Arbitrary plumbing threshold, NOT selected using smoke labels or calibrated.
+threshold = 0.75
+device = "cpu"
+batch_size = 32
+cache_dir = "../.cache/huggingface"
+local_files_only = false
