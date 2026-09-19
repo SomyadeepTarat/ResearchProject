@@ -8,6 +8,7 @@ def load_dataset(path: Path) -> list[Example]:
     examples: list[Example] = []
     seen: set[str] = set()
     sources: dict[str, str] = {}
+    groups: dict[str, str] = {}
     with path.open(encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, 1):
             try:
@@ -19,6 +20,9 @@ def load_dataset(path: Path) -> list[Example]:
                     raise ValueError(f"duplicate id: {example.id}")
                 if example.source_id in sources and sources[example.source_id] != example.evidence:
                     raise ValueError(f"inconsistent evidence for source_id: {example.source_id}")
+                if example.source_id in groups and groups[example.source_id] != example.split_group:
+                    raise ValueError(f"inconsistent group for source_id: {example.source_id}")
+                groups[example.source_id] = example.split_group
                 seen.add(example.id)
                 sources[example.source_id] = example.evidence
                 examples.append(example)

@@ -9,10 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class BaselineRunTests(unittest.TestCase):
-    def test_both_methods_preserve_row_order_and_hide_gold(self):
+    def test_all_methods_preserve_row_order_and_hide_gold(self):
         for method, config_name, constructor in [
             ('embedding', 'embedding_smoke.toml', 'EmbeddingVerifier'),
             ('nli', 'nli_smoke.toml', 'NLIVerifier'),
+            ('structure-aware', 'structure_smoke.toml', 'StructureAwareVerifier'),
         ]:
             with self.subTest(method=method):
                 verifier = Mock()
@@ -20,6 +21,7 @@ class BaselineRunTests(unittest.TestCase):
                 verifier.encoder.model.max_seq_length = 256
                 verifier.backend.max_length = 512
                 verifier.backend.labels = ('contradiction', 'entailment', 'neutral')
+                verifier.nli.backend = verifier.backend
                 torch = Mock()
                 torch.get_num_threads.return_value = 1
                 transformers = Mock()
@@ -36,11 +38,11 @@ class BaselineRunTests(unittest.TestCase):
                 self.assertEqual(len(report['dataset']['sha256']), 64)
                 self.assertNotIn('metrics', report)
                 transformers.set_seed.assert_called_once_with(42)
-                if method == 'nli':
+                if method != 'embedding':
                     self.assertEqual(report['runtime']['pair_order'], ['evidence', 'claim'])
 
     def test_missing_configuration_and_unknown_method(self):
-        for method in ('nli', 'embedding', 'unknown'):
+        for method in ('nli', 'embedding', 'structure-aware', 'unknown'):
             with self.subTest(method=method), self.assertRaises(ValueError):
                 run_baseline(ROOT / 'experiments/smoke.toml', method)
 

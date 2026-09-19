@@ -1,0 +1,20 @@
+dataset = "../data/smoke.jsonl"
+seed = 42
+
+[nli]
+model_id = "cross-encoder/nli-MiniLM2-L6-H768"
+revision = "b95119ce93d3e065de6214e38cd4a97b0f2f2c6d"
+# Untuned diagnostic threshold; development calibration comes later.
+threshold = 0.5
+device = "cpu"
+batch_size = 16
+max_length = 512
+cache_dir = "../.cache/huggingface"
+local_files_only = false
+
+[structure]
+numeric_checks = true
+comparison_checks = true
+# Numerical tolerance in normalized base units; not fitted on smoke labels.
+absolute_tolerance = 1e-9
+relative_tolerance = 1e-6

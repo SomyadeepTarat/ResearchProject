@@ -1,4 +1,4 @@
-"""Shared diagnostic inference runner for baseline methods."""
+"""Shared diagnostic inference runner for all verification methods."""
 from dataclasses import asdict
 from datetime import datetime, timezone
 import hashlib
@@ -9,6 +9,7 @@ import time
 
 from claimaudit.baselines.embedding import EmbeddingVerifier
 from claimaudit.baselines.nli import NLIVerifier
+from claimaudit.verification.structure import StructureAwareVerifier
 from claimaudit.config import ExperimentConfig
 from claimaudit.evaluation.dataset import load_dataset
 
@@ -19,11 +20,13 @@ def sha256(path: Path) -> str:
 
 def run_baseline(config_path: Path, method: str) -> dict:
     config = ExperimentConfig.load(config_path)
-    if method not in ("embedding", "nli"):
+    if method not in ("embedding", "nli", "structure-aware"):
         raise ValueError(f"Unknown baseline: {method}")
-    settings = getattr(config, method)
+    settings = config.nli if method == "structure-aware" else getattr(config, method)
+    if method == "structure-aware" and config.structure is None:
+        raise ValueError("structure-aware inference requires [nli] and [structure] configuration tables")
     if settings is None:
-        raise ValueError(f"{method} inference requires an [{method}] configuration table")
+        raise ValueError(f"{method} inference requires an [{'nli' if method == 'structure-aware' else method}] configuration table")
     rows = load_dataset(config.dataset)
     # Importing model libraries is restricted to this inference path.
     try:
@@ -33,7 +36,14 @@ def run_baseline(config_path: Path, method: str) -> dict:
         raise RuntimeError("Install the model extra: uv sync --extra models") from exc
     set_seed(config.seed)
     start = time.perf_counter()
-    verifier = EmbeddingVerifier(settings) if method == "embedding" else NLIVerifier(settings)
+    if method == "structure-aware":
+        verifier = StructureAwareVerifier(settings, config.structure)
+        nli_backend = verifier.nli.backend
+    elif method == "nli":
+        verifier = NLIVerifier(settings)
+        nli_backend = verifier.backend
+    else:
+        verifier = EmbeddingVerifier(settings)
     predictions = verifier.verify_many([row.to_input() for row in rows])
     elapsed = time.perf_counter() - start
     if len(predictions) != len(rows):
@@ -41,10 +51,13 @@ def run_baseline(config_path: Path, method: str) -> dict:
     model_metadata = (
         {"model_max_seq_length": verifier.encoder.model.max_seq_length}
         if method == "embedding" else
-        {"model_max_seq_length": verifier.backend.max_length,
-         "nli_id2label": dict(enumerate(verifier.backend.labels)),
+        {"model_max_seq_length": nli_backend.max_length,
+         "nli_id2label": dict(enumerate(nli_backend.labels)),
          "pair_order": ["evidence", "claim"]}
     )
+    if method == "structure-aware":
+        model_metadata["fusion_policy"] = "Veto NLI support on a structural contradiction; otherwise retain NLI."
+        model_metadata["parser"] = "explicit_quantitative_grammar_v1"
     packages = {}
     for name in ("claimaudit", "sentence-transformers", "transformers", "torch", "numpy", "huggingface-hub"):
         try:
@@ -54,7 +67,7 @@ def run_baseline(config_path: Path, method: str) -> dict:
     root = Path(__file__).resolve().parents[3]
     lock = root / "uv.lock"
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "purpose": "diagnostic_inference_only",
         "notice": "No benchmark metrics. Smoke fixtures and the example threshold are not research evidence.",
         "created_at": datetime.now(timezone.utc).isoformat(),

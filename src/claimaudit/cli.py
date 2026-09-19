@@ -11,7 +11,7 @@ from claimaudit.schemas import Label
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
-    parser.add_argument("--method", choices=("validate", "embedding", "nli"), default="validate")
+    parser.add_argument("--method", choices=("validate", "embedding", "nli", "structure-aware"), default="validate")
     parser.add_argument("--output", type=Path, help="New JSON file for baseline predictions")
     args = parser.parse_args()
     if args.method != "validate":
@@ -33,7 +33,7 @@ def main() -> None:
                           "notice": report["notice"]}, indent=2))
         return
     if args.output is not None:
-        parser.error("--output is only supported with --method embedding or nli")
+        parser.error("--output is only supported with --method embedding, nli, or structure-aware")
     try:
         config = ExperimentConfig.load(args.config)
         examples = load_dataset(config.dataset)

@@ -12,3 +12,12 @@ Each line is an object with id, source_id, evidence, claim, label, provenance, a
 For the initial ~300-case study, target approximately 75 examples per class. Keep claims atomic and error types exclusive; exclude or separately annotate mixed/other contradictions. Include paraphrased supported controls, equivalent units, entity swaps, lower-is-better metrics, and irrelevant numbers. Independently review annotations where possible and retain disagreements.
 
 Split by original document (or source family for synthetic passages), keeping all variants together. Freeze held-out test IDs before threshold tuning. The 12 smoke cases remain separate. A balanced controlled dataset does not estimate real-world error prevalence.
+
+
+## Controlled v1 release
+
+`controlled_v1/examples.jsonl` contains 300 programmatically generated synthetic examples, separate from the 12 smoke cases. They are author-labeled, not independently reviewed. See `controlled_v1/README.md` for the dataset card and `controlled_v1/splits.json` for frozen assignments.
+
+Examples may now include optional `group_id`, used as the indivisible split/bootstrap unit. It defaults to `source_id` when absent. For this release it identifies the template family, keeping all five sources and all mutations from that family together. For future paper-derived data, use a document ID (or a broader dependency group when required) so passages from the same paper cannot cross splits. All rows sharing a source must share a group.
+
+The reserved train split has 180 examples; development and test have 60 each. Synthetic labels and balanced templates do not replace independent scientific annotation.

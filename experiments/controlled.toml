@@ -1,0 +1,33 @@
+dataset = "../data/controlled_v1/examples.jsonl"
+seed = 42
+
+[embedding]
+model_id = "sentence-transformers/all-MiniLM-L6-v2"
+revision = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+# Reference threshold used only to break development-selection ties.
+threshold = 0.75
+device = "cpu"
+batch_size = 32
+cache_dir = "../.cache/huggingface"
+local_files_only = false
+
+[nli]
+model_id = "cross-encoder/nli-MiniLM2-L6-H768"
+revision = "b95119ce93d3e065de6214e38cd4a97b0f2f2c6d"
+# Reference threshold used only to break development-selection ties.
+threshold = 0.5
+device = "cpu"
+batch_size = 16
+max_length = 512
+cache_dir = "../.cache/huggingface"
+local_files_only = false
+
+[structure]
+numeric_checks = true
+comparison_checks = true
+absolute_tolerance = 1e-9
+relative_tolerance = 1e-6
+
+[evaluation]
+manifest = "../data/controlled_v1/splits.json"
+bootstrap_samples = 2000

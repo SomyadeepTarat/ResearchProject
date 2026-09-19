@@ -95,3 +95,112 @@ Generated local artifacts (ignored by Git):
 - [results/embedding_smoke_m3.json](/Users/somyadeeptarat/Desktop/Claim/results/embedding_smoke_m3.json)
 
 Next checkpoint: the structure-aware verifier, reusing this NLI baseline and adding numerical and comparison-direction checks with explicit explanations and conservative handling of ambiguous text.
+
+
+# Milestone 4 checkpoint — structure-aware verifier
+
+Implemented a conservative grammar for explicit entity/metric quantities and comparisons, numerical unit normalization, comparison direction checks, evidence-linked check results, and an NLI-based hybrid. The hybrid reuses the exact NLI model/revision/threshold and only vetoes support when an enabled check finds a contradiction. Both checks can be disabled independently for later ablations. Matching facts never promote an NLI rejection; unknown syntax, ambiguous scope, and conflicting evidence abstain.
+
+Added schema version 3 artifacts preserving the NLI base verdict, NLI probabilities, and check outcomes. The retained score is labeled nli_entailment_probability and is not a hybrid confidence estimate. Integer counts require exact equality; continuous quantities use configurable tolerances after unit normalization. The grammar and its limitations are documented separately. No dependency changes or additional model downloads were needed.
+
+Validation: 47 tests passed, including all three runner paths, label isolation, unit equivalence, decimal/binary memory units, entity and metric alignment, order reversal, lower-is-better metrics, exact counts at large scale, equality/near-equality, ambiguous syntax, contradictory evidence, ablation switches, and hybrid fusion. A real cached-model run completed on all 12 smoke examples. Saved NLI settings, scores (within 1e-6), and base verdicts match Milestone 3; conclusive check spans were verified against original evidence.
+
+Observed diagnostic check counts: numerical — 3 contradictions, 2 consistent, 7 abstentions; comparison — 3 contradictions, 1 consistent, 8 abstentions. Zero verdicts changed from NLI because it had already rejected all six contradiction examples. This fixture therefore shows no detection gain from the hybrid. No held-out research metrics or calibrated thresholds are claimed.
+
+## Exact files added or modified
+
+- [src/claimaudit/config.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/config.py)
+- [src/claimaudit/schemas.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/schemas.py)
+- [src/claimaudit/cli.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/cli.py)
+- [src/claimaudit/evaluation/baseline_run.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/baseline_run.py)
+- [src/claimaudit/verification/__init__.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/__init__.py)
+- [src/claimaudit/verification/parsing.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/parsing.py)
+- [src/claimaudit/verification/checks.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/checks.py)
+- [src/claimaudit/verification/structure.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/structure.py)
+- [experiments/structure_smoke.toml](/Users/somyadeeptarat/Desktop/Claim/experiments/structure_smoke.toml)
+- [tests/test_structure.py](/Users/somyadeeptarat/Desktop/Claim/tests/test_structure.py)
+- [tests/test_baseline_run.py](/Users/somyadeeptarat/Desktop/Claim/tests/test_baseline_run.py)
+- [docs/structure_checks.md](/Users/somyadeeptarat/Desktop/Claim/docs/structure_checks.md)
+- [README.md](/Users/somyadeeptarat/Desktop/Claim/README.md)
+- [results/README.md](/Users/somyadeeptarat/Desktop/Claim/results/README.md)
+- [CHANGELOG.md](/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md)
+
+Generated local artifacts (ignored by Git):
+
+- [results/structure_smoke.json](/Users/somyadeeptarat/Desktop/Claim/results/structure_smoke.json) — initial integration run.
+- [results/structure_smoke_02.json](/Users/somyadeeptarat/Desktop/Claim/results/structure_smoke_02.json) — final verified run.
+
+Next checkpoint: build the evaluation and dataset-expansion workflow toward approximately 300 examples, freeze source/document-grouped splits, compare all three methods and structural ablations, and report uncertainty and failure cases without tuning on the test set. Parser-development examples must remain outside held-out evaluation.
+
+
+# Milestone 5 checkpoint — controlled evaluation
+
+Added a deterministic 300-example synthetic dataset (75 examples per label, 75 sources, 15 template families), per-row rationales, and explicit author-label provenance. These are not independently reviewed paper excerpts. Added optional group_id metadata and source/group consistency validation. Froze family-level splits before model evaluation: 180 reserved/unused train examples, 60 development examples, and 60 test examples.
+
+Implemented development-only macro-F1 threshold selection, saved calibration before test inference, shared NLI scores across three structural variants, scikit-learn binary metrics, per-error detection recall, all failure records, and 2,000 paired whole-group bootstrap draws. Added a direct optional evaluation dependency on scikit-learn. Extracted the existing fusion policy into a reusable function without changing parser/check logic or tolerances. Runs refuse to overwrite existing directories and produce a completion marker with artifact hashes.
+
+Validation: 59 tests passed. Tests cover deterministic data, exact label balance, group/source/evidence leakage, data hash integrity, hand-computed confusion metrics, deterministic threshold ties, paired bootstrap behavior, and a workflow showing that altered test labels cannot affect development-selected thresholds. Real cached-model evaluation completed, and saved metrics were independently recomputed from prediction records. Artifact hashes, 120 unique development/test IDs, every failure record, check evidence spans, and unchanged shared NLI scores were verified.
+
+Observed 60-example test macro-F1: embedding 0.540; NLI 0.635; NLI + numerical 0.700; NLI + comparison 0.635; full hybrid 0.700. Development-selected thresholds were approximately 0.85486571 for embeddings and 0.5 for NLI. Numerical checks corrected four errors on the accuracy-pair family with no new errors. Comparison checks added no corrections. NLI and the hybrid still rejected 10 of 15 supported examples (all supported interval and precision-proportion cases). The hybrid–NLI macro-F1 difference was about +0.065; its exploratory paired interval included zero, [0.000, 0.220].
+
+These results do not establish real-paper performance or publication-ready superiority. Test families are separated from threshold selection within this dataset, but some grammar forms were used in earlier parser development. Labels are synthetic and not independently reviewed, and only three independent test families are available. The test results are now inspected; method changes informed by them require fresh held-out evaluation or explicitly exploratory reuse.
+
+## Exact files added or modified
+
+- [pyproject.toml](/Users/somyadeeptarat/Desktop/Claim/pyproject.toml)
+- [uv.lock](/Users/somyadeeptarat/Desktop/Claim/uv.lock)
+- [src/claimaudit/schemas.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/schemas.py)
+- [src/claimaudit/config.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/config.py)
+- [src/claimaudit/verification/structure.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/structure.py)
+- [src/claimaudit/evaluation/__init__.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/__init__.py)
+- [src/claimaudit/evaluation/dataset.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/dataset.py)
+- [src/claimaudit/evaluation/synthetic.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/synthetic.py)
+- [src/claimaudit/evaluation/splits.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/splits.py)
+- [src/claimaudit/evaluation/metrics.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/metrics.py)
+- [src/claimaudit/evaluation/benchmark.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/benchmark.py)
+- [tests/test_evaluation.py](/Users/somyadeeptarat/Desktop/Claim/tests/test_evaluation.py)
+- [experiments/controlled.toml](/Users/somyadeeptarat/Desktop/Claim/experiments/controlled.toml)
+- [data/controlled_v1/examples.jsonl](/Users/somyadeeptarat/Desktop/Claim/data/controlled_v1/examples.jsonl)
+- [data/controlled_v1/splits.json](/Users/somyadeeptarat/Desktop/Claim/data/controlled_v1/splits.json)
+- [data/controlled_v1/README.md](/Users/somyadeeptarat/Desktop/Claim/data/controlled_v1/README.md)
+- [data/README.md](/Users/somyadeeptarat/Desktop/Claim/data/README.md)
+- [docs/evaluation.md](/Users/somyadeeptarat/Desktop/Claim/docs/evaluation.md)
+- [README.md](/Users/somyadeeptarat/Desktop/Claim/README.md)
+- [results/README.md](/Users/somyadeeptarat/Desktop/Claim/results/README.md)
+- [CHANGELOG.md](/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md)
+
+Generated local evaluation artifacts (ignored by Git):
+
+- [results/controlled_v1/protocol.json](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/protocol.json)
+- [results/controlled_v1/calibration.json](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/calibration.json)
+- [results/controlled_v1/predictions.jsonl](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/predictions.jsonl)
+- [results/controlled_v1/failures.jsonl](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/failures.jsonl)
+- [results/controlled_v1/summary.json](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/summary.json)
+- [results/controlled_v1/report.md](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/report.md)
+- [results/controlled_v1/complete.json](/Users/somyadeeptarat/Desktop/Claim/results/controlled_v1/complete.json)
+
+Next implementation checkpoint: a Streamlit demo for inspecting evidence, predictions, check explanations, and the actual evaluation report. Independent annotation and paper-derived validation remain separate outstanding research work.
+
+# Milestone 6 — local Streamlit demo
+
+Added a live three-method comparison and a saved-evaluation explorer. Live verification shares one NLI result with the structural verifier, uses cached model resources with serialized access, and defaults to compatible development-selected thresholds. Users can inspect structural evidence spans, explore ablations, and download diagnostic predictions. Input or setting changes hide stale predictions. Live inputs do not modify datasets or saved research results.
+
+The evaluation explorer verifies artifact hashes before displaying metrics, uncertainty intervals, corrections, harms, and filterable prediction records. It needs no model inference. The UI explicitly describes synthetic-label and held-out-family limitations. Responsive verdict cards wrap in narrow panels. File watching is disabled to avoid Streamlit scanning Transformers' optional vision modules; code edits require a server restart.
+
+Validation: 69 tests passed, including ten new service/UI tests. Real cached-model inference and saved evaluation browsing were checked in the browser. The numerical smoke claim produced embedding support, NLI rejection, and a numerical contradiction in the hybrid. No benchmark results were regenerated or altered for this milestone.
+
+Launch commands and test commands are in [app/README.md](/Users/somyadeeptarat/Desktop/Claim/app/README.md). Local URL: http://127.0.0.1:8501.
+
+## Exact files added or modified for Milestone 6
+
+- [.streamlit/config.toml](/Users/somyadeeptarat/Desktop/Claim/.streamlit/config.toml)
+- [pyproject.toml](/Users/somyadeeptarat/Desktop/Claim/pyproject.toml)
+- [uv.lock](/Users/somyadeeptarat/Desktop/Claim/uv.lock)
+- [src/claimaudit/demo.py](/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/demo.py)
+- [app/streamlit_app.py](/Users/somyadeeptarat/Desktop/Claim/app/streamlit_app.py)
+- [app/README.md](/Users/somyadeeptarat/Desktop/Claim/app/README.md)
+- [tests/test_demo.py](/Users/somyadeeptarat/Desktop/Claim/tests/test_demo.py)
+- [README.md](/Users/somyadeeptarat/Desktop/Claim/README.md)
+- [CHANGELOG.md](/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md)
+
+All six implementation milestones are complete. Independent paper-derived annotation and fresh held-out validation remain outstanding research work.

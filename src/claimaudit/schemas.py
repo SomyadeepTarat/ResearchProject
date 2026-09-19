@@ -41,11 +41,18 @@ class Example:
     label: Label
     provenance: str
     rationale: str
+    group_id: str | None = None
 
     def __post_init__(self) -> None:
         for name in ("id", "source_id", "evidence", "claim", "provenance", "rationale"):
             require_text(name, getattr(self, name))
         object.__setattr__(self, "label", Label(self.label))
+        if self.group_id is not None:
+            require_text("group_id", self.group_id)
+
+    @property
+    def split_group(self) -> str:
+        return self.group_id or self.source_id
 
     def to_input(self) -> ClaimInput:
         return ClaimInput(self.evidence, self.claim)
@@ -56,6 +63,28 @@ class Example:
 
 
 @dataclass(frozen=True)
+class StructuralCheck:
+    name: str
+    status: str
+    explanation: str
+    evidence_spans: tuple[str, ...] = ()
+    claim_span: str = ""
+
+    def __post_init__(self) -> None:
+        if self.name not in {"numeric", "comparison"}:
+            raise ValueError("Unknown structural check")
+        if self.status not in {"consistent", "contradiction", "abstain", "disabled"}:
+            raise ValueError("Unknown structural check status")
+        require_text("explanation", self.explanation)
+        if not isinstance(self.evidence_spans, tuple) or any(not isinstance(span, str) or not span.strip() for span in self.evidence_spans):
+            raise ValueError("evidence_spans must be a tuple of nonempty strings")
+        if self.status in {"consistent", "contradiction"}:
+            if not self.evidence_spans:
+                raise ValueError("A conclusive check requires evidence spans")
+            require_text("claim_span", self.claim_span)
+
+
+@dataclass(frozen=True)
 class Prediction:
     method: str
     verdict: Verdict
@@ -63,11 +92,17 @@ class Prediction:
     score: float | None = None
     score_type: str | None = None
     class_scores: dict[str, float] | None = None
+    checks: tuple[StructuralCheck, ...] = ()
+    base_verdict: Verdict | None = None
 
     def __post_init__(self) -> None:
         require_text("method", self.method)
         require_text("explanation", self.explanation)
         object.__setattr__(self, "verdict", Verdict(self.verdict))
+        if self.base_verdict is not None:
+            object.__setattr__(self, "base_verdict", Verdict(self.base_verdict))
+        if not isinstance(self.checks, tuple) or any(not isinstance(check, StructuralCheck) for check in self.checks):
+            raise ValueError("checks must be a tuple of StructuralCheck instances")
         if (self.score is None) != (self.score_type is None):
             raise ValueError("score and score_type must be supplied together")
         if self.score is not None:

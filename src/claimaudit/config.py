@@ -64,11 +64,41 @@ class NLIConfig:
 
 
 @dataclass(frozen=True)
+class StructureConfig:
+    numeric_checks: bool = True
+    comparison_checks: bool = True
+    absolute_tolerance: float = 1e-9
+    relative_tolerance: float = 1e-6
+
+    def __post_init__(self) -> None:
+        if type(self.numeric_checks) is not bool or type(self.comparison_checks) is not bool:
+            raise ValueError("Structural check switches must be booleans")
+        for name in ("absolute_tolerance", "relative_tolerance"):
+            value = getattr(self, name)
+            if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
+                raise ValueError(f"{name} must be a finite nonnegative number")
+
+
+@dataclass(frozen=True)
+class EvaluationConfig:
+    manifest: Path
+    bootstrap_samples: int = 2000
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.manifest, Path):
+            raise ValueError("manifest must be a pathlib.Path")
+        if type(self.bootstrap_samples) is not int or self.bootstrap_samples < 1:
+            raise ValueError("bootstrap_samples must be a positive integer")
+
+
+@dataclass(frozen=True)
 class ExperimentConfig:
     dataset: Path
     seed: int = 42
     embedding: EmbeddingConfig | None = None
     nli: NLIConfig | None = None
+    structure: StructureConfig | None = None
+    evaluation: EvaluationConfig | None = None
 
     def __post_init__(self) -> None:
         if type(self.seed) is not int or not 0 <= self.seed < 2**32:
@@ -81,7 +111,7 @@ class ExperimentConfig:
         path = path.resolve()
         with path.open("rb") as handle:
             values = tomllib.load(handle)
-        unknown = values.keys() - {"dataset", "seed", "embedding", "nli"}
+        unknown = values.keys() - {"dataset", "seed", "embedding", "nli", "structure", "evaluation"}
         if unknown:
             raise ValueError(f"Unknown config keys: {sorted(unknown)}")
         dataset = values.get("dataset")
@@ -98,4 +128,15 @@ class ExperimentConfig:
             require_text("cache_dir", cache_dir)
             options["cache_dir"] = (path.parent / cache_dir).resolve()
             models[name] = config_type(**options)
+        if "structure" in values:
+            if not isinstance(values["structure"], dict):
+                raise ValueError("structure must be a TOML table")
+            models["structure"] = StructureConfig(**values["structure"])
+        if "evaluation" in values:
+            if not isinstance(values["evaluation"], dict):
+                raise ValueError("evaluation must be a TOML table")
+            options = dict(values["evaluation"])
+            require_text("manifest", options.get("manifest"))
+            options["manifest"] = (path.parent / options["manifest"]).resolve()
+            models["evaluation"] = EvaluationConfig(**options)
         return cls((path.parent / dataset).resolve(), values.get("seed", 42), **models)

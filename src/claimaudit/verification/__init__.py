@@ -1,1 +1,1 @@
-"""Verification components (implemented in subsequent milestones)."""
+"""Conservative numerical/comparison checks and an NLI-based hybrid verifier."""
