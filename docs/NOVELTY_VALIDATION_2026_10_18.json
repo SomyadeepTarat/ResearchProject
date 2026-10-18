@@ -1,0 +1,30 @@
+{
+  "assessment_date": "2026-10-18",
+  "repository": "/Users/somyadeeptarat/Desktop/Claim",
+  "tests": {
+    "command": ".venv/bin/python -m unittest discover -s tests -v",
+    "count": 69,
+    "status": "passed",
+    "elapsed_seconds": 3.727,
+    "log_sha256": "936f555bdd9132e633d225cf53b813f3bcd92af57e400823e4ce2cd4044b4e39"
+  },
+  "saved_run": "results/controlled_v1",
+  "artifact_hash_checks": {
+    "calibration.json": true,
+    "failures.jsonl": true,
+    "predictions.jsonl": true,
+    "protocol.json": true,
+    "report.md": true,
+    "summary.json": true
+  },
+  "new_inference_run": false,
+  "new_verifier_implemented": false,
+  "novelty_gate": "not_passed",
+  "pdf": {
+    "path": "output/pdf/ClaimAudit_IDF_B_Research_Draft.pdf",
+    "pages": 7,
+    "all_ten_questions_present": true,
+    "sha256": "4f41b0b393f33bcd80c85ca41b1e024959d163d3645953aa03e34917a0aa095c",
+    "visual_review": "all pages rendered using PDFium and inspected; detailed architecture page also inspected individually"
+  }
+}

@@ -204,3 +204,19 @@ Launch commands and test commands are in [app/README.md](/Users/somyadeeptarat/D
 - [CHANGELOG.md](/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md)
 
 All six implementation milestones are complete. Independent paper-derived annotation and fresh held-out validation remain outstanding research work.
+
+# 18 October 2026 - novelty assessment and IDF-B discussion draft
+
+Reviewed the restored ClaimAudit repository and the supplied VIT disclosure form. Researched close scientific-verification publications and published patent claims. Defined scope-consistent evidence binding with ambiguity-directed source expansion as a candidate research direction. The novelty-conditioned implementation gate has not passed; no new verifier or model behavior was introduced. The disclosure explicitly distinguishes the proposed TRL 2 extension from the existing prototype and does not claim patentability.
+
+Validation: all 69 existing tests passed; all six controlled_v1 artifact hashes matched their manifest. No model inference was rerun. The seven-page response PDF includes all ten form questions, was rendered and visually reviewed, and preserves the supplied original form unchanged.
+
+Exact new paths:
+
+- `/Users/somyadeeptarat/Desktop/Claim/docs/NOVELTY_ASSESSMENT_2026_10_18.md`
+- `/Users/somyadeeptarat/Desktop/Claim/docs/INVENTION_DISCLOSURE_B_CLAIMAUDIT_DRAFT.md`
+- `/Users/somyadeeptarat/Desktop/Claim/docs/NOVELTY_VALIDATION_2026_10_18.json`
+- `/Users/somyadeeptarat/Desktop/Claim/scripts/render_disclosure_draft.py`
+- `/Users/somyadeeptarat/Desktop/Claim/output/pdf/ClaimAudit_IDF_B_Research_Draft.pdf`
+
+This entry modifies `/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md`. Rebuild the PDF with `python scripts/render_disclosure_draft.py` in an environment containing ReportLab; this optional document tool does not change core project dependencies.
