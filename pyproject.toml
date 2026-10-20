@@ -11,6 +11,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = []
 
 [project.optional-dependencies]
+research = ["dd==0.6.0", "z3-solver==4.15.4.0", "problog==2.3.0", "pysdd==1.0.6"]
 app = ["streamlit>=1.50,<2", "pandas>=2.2,<4"]
 evaluation = ["scikit-learn>=1.7,<2"]
 models = ["sentence-transformers>=5,<6", "torch>=2.6,<3", "transformers>=5,<6"]

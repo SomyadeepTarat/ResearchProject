@@ -1,0 +1,22 @@
+{
+  "finished_at": "2026-10-20T05:39:45.254473+00:00",
+  "total": 12,
+  "correct": 8,
+  "false_support": 0,
+  "invalid_or_error": 4,
+  "by_label": {
+    "supported": {
+      "total": 4,
+      "correct": 4
+    },
+    "contradicted": {
+      "total": 6,
+      "correct": 4
+    },
+    "insufficient": {
+      "total": 2,
+      "correct": 0
+    }
+  },
+  "responses_sha256": "82d9acc43d1548688cde6b418fca67a0c14886706eef0c4bba8de0be5c277d7a"
+}

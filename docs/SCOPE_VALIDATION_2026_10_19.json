@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-19",
+  "python": "3.12.11",
+  "tests": {
+    "passed": 83,
+    "command": ".venv/bin/python -m unittest discover -s tests -q",
+    "random_oracle_problems": 200,
+    "ui": "Streamlit AppTest covers six scenarios and header resolution; browser visual inspection unavailable because webview attachment timed out"
+  },
+  "benchmark": {
+    "dataset": "300 synthetic engineering cases; six parameterized families, no held-out study",
+    "n": 300,
+    "exact_reference_agreement": 300,
+    "expected_status_matches": 300,
+    "binary_support_accuracy": {
+      "pooled_support": 0.5,
+      "flattened_join_support": 0.6666666666666666,
+      "scope": 1.0
+    },
+    "timing_note": "Single local runs; timings recorded for diagnosis, not a speedup claim.",
+    "scaling_case": {
+      "status": "supported",
+      "world_counts": {
+        "supported": 1048576
+      },
+      "representative_bindings": {
+        "supported": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "worlds": 1048576,
+      "state_widths": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "transitions": 40,
+      "input_sha256": "3bef25a3019722e4494477a72890856a8d7e86ccbafe838d39dbf79724c97c96",
+      "policy": "scope-v1"
+    }
+  },
+  "sha256": {
+    "/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/scope.py": "5d4f26d3a0bccf76f1848fd8f1a79091a3e257861972b50458f4a978fc8307ef",
+    "/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/scope_benchmark.py": "ce8a528edcf427dcfc44cf60d1e665a84cf7e991ae9660aaaec0a59db81a30d3",
+    "/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/scope_demo.py": "79c283391f602bcee2b66831cd767c926863e7dde1db333025ba7f539436f726",
+    "/Users/somyadeeptarat/Desktop/Claim/app/streamlit_app.py": "b09a7661650649ce0537131c55fd949a3523c8936de75b46f4a86823ed82ddee",
+    "/Users/somyadeeptarat/Desktop/Claim/tests/test_scope.py": "2ec17d280d8d6a2fe81a2dc4e563940b19ee09c6a249e3b7e65689dbdc62c177",
+    "/Users/somyadeeptarat/Desktop/Claim/data/scope_v1/cases.jsonl": "0185d3bd5a6538995d20cdef7a38a86025677624a7e0783067f66c679274ba8f",
+    "/Users/somyadeeptarat/Desktop/Claim/results/scope_v1/summary.json": "37e2aa401976766ccb4ffdb80985a8ac04b6bdcccfb2a70cf23892c54da4a779",
+    "/Users/somyadeeptarat/Desktop/Claim/results/scope_v1/predictions.jsonl": "92c2945379a5e7aeb935d9edd9078be331ed74baa4c24187f339cdd85b9332be",
+    "/Users/somyadeeptarat/Desktop/Claim/docs/SCOPEGUARD_RESEARCH.md": "b0d7b50e5f8d38c5aea8eb453549cb583e63cfd391270d9b016009bc8190b426",
+    "/Users/somyadeeptarat/Desktop/Claim/docs/INVENTION_DISCLOSURE_B_SCOPE_V1.md": "5e98a4f290bb59bbe9eae525c0fdd17b1d7874b56efa2bd6c6a12d53bd599f85",
+    "/Users/somyadeeptarat/Desktop/Claim/output/pdf/ClaimAudit_ScopeGuard_IDF_B.pdf": "f80f1945ac17815ac67ce072f91f74379717feab94a8dbae3e0e77a9c0a3b202"
+  }
+}

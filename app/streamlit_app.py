@@ -168,7 +168,7 @@ def main():
     st.title('ClaimAudit')
     st.caption('Evidence-grounded claim verification · research prototype')
     config=ExperimentConfig.load(ROOT/'experiments/controlled.toml')
-    page=st.sidebar.radio('Workspace',['Verify a claim','Explore evaluation','About'])
+    page=st.sidebar.radio('Workspace',['Verify a claim','Explore evaluation','Scope audit (experimental)','About'])
     directories=sorted(path.parent for path in (ROOT/'results').glob('*/complete.json'))
     run, run_name=None,None
     if directories:
@@ -184,6 +184,9 @@ def main():
     st.sidebar.caption('Live inputs stay in this session and are not written to dataset or result files.')
     if page=='Verify a claim':
         verify_page(config,run,run_name)
+    elif page=='Scope audit (experimental)':
+        from claimaudit.scope_demo import render_scope_demo
+        render_scope_demo()
     elif page=='Explore evaluation':
         evaluation_page(run)
     else:

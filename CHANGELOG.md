@@ -220,3 +220,30 @@ Exact new paths:
 - `/Users/somyadeeptarat/Desktop/Claim/output/pdf/ClaimAudit_IDF_B_Research_Draft.pdf`
 
 This entry modifies `/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md`. Rebuild the PDF with `python scripts/render_disclosure_draft.py` in an environment containing ReportLab; this optional document tool does not change core project dependencies.
+
+## 2026-10-19 — ScopeGuard bounded research prototype
+
+Implemented correlated source alternatives, exact joint-context threshold checking, state merging, conservative missing-evidence handling, sufficient single-header clarification and replay verification. No claim of established patent novelty. Added Claim Cards (14 October 2026) to the prior-art discussion. All new performance numbers are synthetic engineering checks, separate from the earlier embedding/NLI study.
+
+Exact changed or added paths:
+
+- `/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/verification/scope.py` — typed records, exact engine, clarification and replay.
+- `/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/evaluation/scope_benchmark.py` — independent exhaustive reference, diagnostic baselines, generator and recorded run.
+- `/Users/somyadeeptarat/Desktop/Claim/src/claimaudit/scope_demo.py` — six interactive scenarios and human-reviewed clarification.
+- `/Users/somyadeeptarat/Desktop/Claim/app/streamlit_app.py` — experimental workspace route.
+- `/Users/somyadeeptarat/Desktop/Claim/tests/test_scope.py` — semantic, random-reference, replay and interactive tests.
+- `/Users/somyadeeptarat/Desktop/Claim/data/scope_v1/cases.jsonl` — 300 synthetic fixtures.
+- `/Users/somyadeeptarat/Desktop/Claim/data/scope_v1/README.md` — dataset provenance and limitations.
+- `/Users/somyadeeptarat/Desktop/Claim/docs/SCOPEGUARD_RESEARCH.md` — specification, rationale, results, prior art and journal protocol.
+- `/Users/somyadeeptarat/Desktop/Claim/docs/INVENTION_DISCLOSURE_B_SCOPE_V1.md` — all ten disclosure responses.
+- `/Users/somyadeeptarat/Desktop/Claim/docs/SCOPE_VALIDATION_2026_10_19.json` — validation summary and artifact hashes.
+- `/Users/somyadeeptarat/Desktop/Claim/scripts/render_disclosure_draft.py` — optional current-prototype rendering, retaining historical rendering mode.
+- `/Users/somyadeeptarat/Desktop/Claim/output/pdf/ClaimAudit_ScopeGuard_IDF_B.pdf` — seven-page disclosure annex.
+- `/Users/somyadeeptarat/Desktop/Claim/results/scope_v1/summary.json` — locally generated metrics (ignored under existing repository policy).
+- `/Users/somyadeeptarat/Desktop/Claim/results/scope_v1/predictions.jsonl` — per-example outcomes and timings (ignored under existing repository policy).
+- `/Users/somyadeeptarat/Desktop/Claim/README.md` — entry point and limitations.
+- `/Users/somyadeeptarat/Desktop/Claim/CHANGELOG.md` — this checkpoint.
+
+## 2026-10-20 - Adversarial ScopeGuard review
+
+Completed an opened-source prior-art register and rejected all three proposed novelty candidates before implementation. Added a known-method reusable BDD extension, real ProbLog/PySDD and Z3 adapters, differential tests, reserved inputs and adverse-scaling evaluation. Recorded exact observations and a local Ollama comparator with explicit limitations. Re-filled all ten IDF-B questions with no affirmative novelty claim and TRL 3. Exact paths and evidence: docs/adversarial_review/CHANGESET.md. Earlier files are retained as historical drafts.

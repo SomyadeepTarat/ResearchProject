@@ -5,6 +5,7 @@ Run with the bundled document Python or an environment containing reportlab.
 """
 from pathlib import Path
 import re
+import argparse
 from xml.sax.saxutils import escape
 
 from reportlab.lib import colors
@@ -30,7 +31,11 @@ def inline(text):
     return re.sub(r'https://[^\s<>]+', lambda m: '<link href="' + m[0] + '">' + m[0] + '</link>', text)
 
 
-def render():
+def render(scope_v1=False):
+    global SOURCE, OUTPUT
+    if scope_v1:
+        SOURCE = ROOT / "docs/INVENTION_DISCLOSURE_B_SCOPE_V1.md"
+        OUTPUT = ROOT / "output/pdf/ClaimAudit_ScopeGuard_IDF_B.pdf"
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle('BodyDraft', fontName='Helvetica', fontSize=10,
@@ -57,7 +62,7 @@ def render():
             story.append(Paragraph('Invention disclosure<br/>Research response draft',
                                    ParagraphStyle('TitleDraft', fontName='Helvetica-Bold',
                                    fontSize=25, leading=29, textColor=INK, spaceAfter=12)))
-            story.append(Paragraph('Mapped to VIT IDF-B | 18 October 2026', body))
+            story.append(Paragraph('Mapped to VIT IDF-B | ' + ('19 October 2026' if scope_v1 else '18 October 2026'), body))
         elif line.startswith('## '):
             if line == '## References' or re.match(r'## (3|4|7|8|9)\. ', line):
                 story.append(PageBreak())
@@ -106,7 +111,7 @@ def render():
         canvas.line(18*mm, 17*mm, 192*mm, 17*mm)
         canvas.setFont('Helvetica', 8)
         canvas.setFillColor(INK)
-        canvas.drawString(18*mm, 12*mm, 'DISCUSSION DRAFT | Novelty unresolved | Proposed extension not implemented')
+        canvas.drawString(18*mm, 12*mm, 'DISCUSSION DRAFT | Novelty unresolved | ' + ('Bounded prototype implemented' if scope_v1 else 'Proposed extension not implemented'))
         canvas.drawRightString(192*mm, 12*mm, str(doc.page))
         canvas.restoreState()
 
@@ -120,4 +125,6 @@ def render():
 
 
 if __name__ == '__main__':
-    render()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--scope-v1", action="store_true")
+    render(parser.parse_args().scope_v1)

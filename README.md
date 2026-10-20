@@ -135,3 +135,13 @@ Milestone 6 validation: **69 tests passed**, including Streamlit AppTest interac
 The six implementation milestones are now in place. Independent annotation and paper-derived evaluation are still needed to support broader research claims; the current synthetic results are limited prototype evidence.
 
 See CHANGELOG.md for exact paths changed at each checkpoint.
+
+## Experimental scope verification (19 October 2026)
+
+ScopeGuard checks whether a reviewed compound claim is jointly supported within compatible experimental contexts under every supplied source interpretation. It detects evidence splicing and can recommend a decision-sufficient header clarification. It uses structured, manually reviewed inputs; automatic PDF extraction and patent novelty are not established.
+
+Run the additional benchmark with `.venv/bin/python -m claimaudit.evaluation.scope_benchmark`, then open **Scope audit (experimental)** in the existing Streamlit app. See [research specification and measured results](docs/SCOPEGUARD_RESEARCH.md) and [updated ten-question disclosure](docs/INVENTION_DISCLOSURE_B_SCOPE_V1.md). The older 18 October disclosure remains a historical proposal.
+
+### Adversarial review checkpoint - 20 October 2026
+
+The [four-stage review](docs/adversarial_review/STAGE1_PRIOR_ART.md) supersedes earlier ScopeGuard novelty framing: **no defensible novelty was established; the recommendation is a research-paper-only route**. The known-method compiled verifier is compared with real ProbLog/PySDD, Z3 and exhaustive baselines. See the [decision memo](docs/adversarial_review/STAGE2_DECISION_MEMO.md), [measured results and reproduction commands](docs/adversarial_review/STAGE3_RESULTS.md), [completed ten-question IDF-B](docs/adversarial_review/STAGE4_COMPLETED_IDF_B.md), and [exact changed-file paths](docs/adversarial_review/CHANGESET.md). This is not evidence of patentability or end-to-end PDF verification accuracy.

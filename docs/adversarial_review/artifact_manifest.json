@@ -1,0 +1,43 @@
+{
+  "created_at_utc": "2026-10-20T05:40:56.834919+00:00",
+  "decision": "No defensible novelty established; research-paper-only recommendation.",
+  "tests": "90 tests passed; see tests.txt",
+  "pdf_qa": {
+    "memo_pages": 1,
+    "idf_pages": 8,
+    "questions_1_to_10_verified": true,
+    "all_pages_rendered_and_visually_inspected": true,
+    "trl_3_checked": true
+  },
+  "sha256": {
+    "docs/adversarial_review/ollama_responses.jsonl": "82d9acc43d1548688cde6b418fca67a0c14886706eef0c4bba8de0be5c277d7a",
+    "docs/adversarial_review/STAGE4_COMPLETED_IDF_B.md": "0abd6ebe38594e3f9bdaf993890011358bcd476435389d55b14a0a006917a47d",
+    "docs/adversarial_review/tests.txt": "ae4e088422bc7d3ddb5535669c9eff65cc6691f051fbd90a99c72ec5c1e62ea1",
+    "docs/adversarial_review/solver_summary.json": "9b041ef3b95418a84bad6a914cd781d5c635b82801df9ae3830d08480b5f80d6",
+    "docs/adversarial_review/STAGE2_DECISION_MEMO.md": "0b726cf81c647b7eee72c21c76e48df2f2baf2bc2bf7e21065abbc5876793616",
+    "docs/adversarial_review/solver_measurements.jsonl": "bd9070d5d2f0d73779a8933ced994e5da0fefbca0f93799906b01f72bc105d4e",
+    "docs/adversarial_review/STAGE1_PRIOR_ART.md": "077c68273e59fcf8995cfd189d33b32a58a9bf5fe37b7c6486976726774c739b",
+    "docs/adversarial_review/ollama_summary.json": "77c727b27c4c48877db317cc67218c1eb9e082af286c37ea5d4f75a1b8f8d6ae",
+    "docs/adversarial_review/STAGE3_RESULTS.md": "f1b1dc7d3911a003ef0dd90b4708da432107a4b3965d6a1d6e273f6830e904db",
+    "docs/adversarial_review/CHANGESET.md": "e0d93e9c6c946aedcc9f6ebaed34e9f4a81bbea1a4bb2e53977545a209a7bb62",
+    "docs/adversarial_review/ollama_protocol.json": "3613f2663e99ed469cffd114a1da16f7b88133b66a24a04c87b109973ebafbab",
+    "output/pdf/ClaimAudit_Novelty_Decision_Memo.pdf": "b8ca62a7416258e26b85eeae8678a6a47b7d090f599c6c417f02ea403417cd0f",
+    "output/pdf/ClaimAudit_IDF_B_Adversarial_Review.pdf": "176ef75f4e13c2ef19edaa5ccf4dab5a515b7c7465fb558e0bcc7b0173231f02",
+    "data/scope_v2/README.md": "9bd38a24eac0dada5a0f4a06631319b19cf38b3933ad2a4951e78f6883d49fe5",
+    "data/scope_v2/heldout.jsonl": "02e1ded15415be7e90f95bc28da336cf6f7567e55fd69526bef3f35da60528c4",
+    "data/scope_v2/paper_sources.json": "728dbe14d593a7fd2688cb9648f663825cfd41df8ed11b3ef96abf9ca959d924",
+    "data/scope_v2/freeze.json": "74fc48f899af1db73e4618f4e84af4b45a8fc849164273b3333889b4326caf30",
+    "pyproject.toml": "72c5f629ebbb83908fcd686aa09c4d73068df888e1bd35435e2de93d26ff9fe2",
+    "uv.lock": "e4ce05e284e20e0f43711bc2b6bf910c24092c5604261cc71e386f41341e700b",
+    "src/claimaudit/verification/scope.py": "5d4f26d3a0bccf76f1848fd8f1a79091a3e257861972b50458f4a978fc8307ef",
+    "src/claimaudit/verification/compiled_scope.py": "f6c3bcd2f9002959a7d45d604f7204f521dbf9f1786ca60c8079eef4e38f19c4",
+    "src/claimaudit/evaluation/scope_backends.py": "6eef72ea2a2f7b2c4ab1ce4abd421db74eefb2b5ed215984c9ea21c7322eb1da",
+    "src/claimaudit/evaluation/adversarial_benchmark.py": "7e917ab2c0b63dc8a828fe6a2a559c2a1b14457855b3f56d371f5429ce3ddba6",
+    "src/claimaudit/evaluation/scope_benchmark.py": "ce8a528edcf427dcfc44cf60d1e665a84cf7e991ae9660aaaec0a59db81a30d3",
+    "scripts/freeze_scope_holdout.py": "347930bd2f86f0d54456a7d0d33c5450e492466dbef0999f1bf6922f53f829e4",
+    "scripts/evaluate_local_scope_llm.py": "e3ab3fa24b7b29a2b255a1b2facf002f7d78b749fef96ff2cf74d7b3375cfcc5",
+    "scripts/build_adversarial_report.py": "3cd50dcb384430c58209ac11661229b80d52c1a998e6b5e3facf176d1fec97b5",
+    "scripts/render_adversarial_disclosure.py": "abd0ddf2759981713d50b8ffcddffc0610942c7e2df30405d6be6fca28e9dcef",
+    "tests/test_scope_backends.py": "e1007f7526b66d06310dd4dae3fc89b663a3cc0dbe4f74f6f7051f29012dd82b"
+  }
+}

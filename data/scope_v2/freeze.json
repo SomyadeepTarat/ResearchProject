@@ -1,0 +1,7 @@
+{
+  "frozen_at": "2026-10-19T16:45:16.241759+00:00",
+  "seed": 20261019,
+  "input_sha256": "02e1ded15415be7e90f95bc28da336cf6f7567e55fd69526bef3f35da60528c4",
+  "records": 36,
+  "procedure": "Frozen before new backend implementation/evaluation. No tuning against this set. Same assistant authors and annotates; not a blinded independent holdout."
+}
